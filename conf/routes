@@ -1,0 +1,23 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# An example controller showing a sample home page
+GET    /                        controllers.HomeController.index
+# An example controller showing how to use dependency injection
+GET    /count                   controllers.CountController.count
+# An example controller showing how to write asynchronous code
+GET    /message                 controllers.AsyncController.message
+
+# Map static resources from the /public folder to the /assets URL path
+GET    /assets/*file            controllers.Assets.versioned(path="/public", file: Asset)
+
+#Post Data
+POST   /store/phone             controllers.MobileDataEntryController.storePhoneLog()
+POST   /store/sms               controllers.MobileDataEntryController.storeSmsLog()
+POST   /store/location          controllers.MobileDataEntryController.storeLocation()
+
+#Fetch Data
+GET    /get/phone/:childId      controllers.ParentAppController.getPhoneLogForChild(childId:Long)
+GET    /get/sms/:childId        controllers.ParentAppController.getSmsLogForChild(childId:Long)
+GET    /get/location/:childId   controllers.ParentAppController.getLocationForChild(childId:Long)
