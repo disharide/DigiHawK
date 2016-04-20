@@ -1,4 +1,4 @@
-name := """MobileLog"""
+name := """DigiHawk"""
 
 version := "1.0-RELEASE"
 
