@@ -1,0 +1,174 @@
+ @main(title="Registration"){
+<h2>Registration Page</h2>
+}
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<script id="customMessageTemplate" type="text/html">
+	<em class="customMessage" data-bind="validationMessage: field"></em>
+</script>
+<body>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-6" id="registerForm">
+				<div class="row">
+					<div class="col-md-6 form-row">
+						<label for="firstName" class="register">First Name</label>
+					</div>
+					<div class="col-md-6 form-row">
+						<input type="text" id="firstName" data-bind="value: firstName"
+							class="register" />
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6 form-row">
+						<label for="lastName" class="register">Last Name</label>
+					</div>
+					<div class="col-md-6 form-row">
+						<input type="text" id="lastName" class="register"
+							data-bind="value: lastName" />
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6 form-row">
+						<label for="emailId" class="register">Email Id</label>
+					</div>
+					<div class="col-md-6 form-row">
+						<input type="text" id="emailId" class="register"
+							data-bind="value: emailId" />
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6 form-row">
+						<label for="password" class="register">Password</label>
+					</div>
+					<div class="col-md-6 form-row">
+						<input type="password" id="password" class="register"
+							data-bind="value: password" />
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6 form-row">
+						<label for="confirmPassword" class="register">Confirm
+							Password</label>
+					</div>
+					<div class="col-md-6 form-row">
+						<input type="text" id="confirmPassword" class="register"
+							data-bind="value: confirmPassword" />
+					</div>
+				</div>
+				<div class="col-md-6 form-row">
+					<input type="button" value="Sign Up" class="register"
+						data-bind="click: checkEmail" />
+				</div>
+			</div>
+
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+	ko.validation.rules.pattern.message = 'Invalid.';
+
+	ko.validation.init({
+		registerExtenders : true,
+		messagesOnModified : true,
+		insertMessages : true,
+		parseInputAttributes : true,
+		messageTemplate : null
+	}, true);
+
+	var baseUri = "http://10.2.192.79:8998/";
+
+	var registrationModel = {
+
+		firstName : ko.observable().extend({
+			required : {
+				message : "Please enter First Name"
+			}
+		}),
+		lastName : ko.observable().extend({
+			required : {
+				message : "Please enter Last Name"
+			}
+		}),
+		emailId : ko.observable().extend({
+			required : {
+				message : "Please enter Email Id"
+			},
+			email : true
+		}),
+		password : ko.observable().extend({
+			required : {
+				message : "Please enter Password"
+			}
+		}),
+		confirmPassword : ko.observable().extend({
+			required : {
+				message : "Please confirm your Password"
+			}
+		}),
+
+		//checkEmailUri: URI + firstName(),
+
+		/*checkEmail: function(){
+			$.ajax("/checkmail",{
+				data:
+			});
+		},*/
+
+		saveUser : function() {
+
+			if (registrationModel.errors().length === 0) {
+				console.log("submission done ");
+
+				$.ajax("/register", {
+					data : ko.toJSON(registrationModel),
+					headers : {
+						'Accept' : 'application/json',
+						'Content-Type' : 'application/json'
+					},
+					type : "POST",
+					dataType : 'json',
+					success : function(result) {
+						if (result.status == "SUCCESS") {
+							window.location.href = baseUri + "thankyou";
+						} else {
+							alert("Registration Failed");
+						}
+					}
+
+				});
+			} else {
+				registrationModel.errors.showAllMessages();
+			}
+		},
+
+		checkEmail : function() {
+
+			var checkEmailUri = baseUri + "checkmail?mailId="
+					+ registrationModel.emailId();
+
+			console.log("checking email id from " + checkEmailUri);
+
+			$.ajax(checkEmailUri, {
+				type : "GET",
+				contentType : 'application/json; charset=utf-8',
+				success : function(result) {
+					if (result.status == "SUCCESS") {
+						registrationModel.saveUser();
+					} else {
+						alert("Email id Already registered");
+					}
+				}
+			});
+		}
+
+	}
+
+	registrationModel.errors = ko.validation.group(registrationModel);
+	ko.applyBindings(registrationModel, $("#registerForm")[0])
+</script>
+</html>

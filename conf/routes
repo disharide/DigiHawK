@@ -21,3 +21,9 @@ POST   /store/location          controllers.MobileDataEntryController.storeLocat
 GET    /get/phone/:childId      controllers.ParentAppController.getPhoneLogForChild(childId:Long)
 GET    /get/sms/:childId        controllers.ParentAppController.getSmsLogForChild(childId:Long)
 GET    /get/location/:childId   controllers.ParentAppController.getLocationForChild(childId:Long)
+
+#Registration module
+GET    /register/page           controllers.RegistrationController.get()
+POST   /register                controllers.RegistrationController.saveUser()
+GET    /checkmail               controllers.RegistrationController.checkMail()
+GET    /thankyou                controllers.RegistrationController.success()

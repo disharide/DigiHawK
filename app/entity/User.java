@@ -19,8 +19,9 @@ public class User extends RootEntity {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Column(name = "USER_NAME")
-	public String name;
+	public String firstName;
+
+	public String lastName;
 
 	@Column(unique = true, name = "EMAIL_ID")
 	public String emailId;

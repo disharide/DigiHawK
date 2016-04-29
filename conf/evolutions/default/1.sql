@@ -36,7 +36,8 @@ create table SMS_LOG (
 
 create table APP_USERS (
   id                        bigserial not null,
-  USER_NAME                 varchar(255),
+  first_name                varchar(255),
+  last_name                 varchar(255),
   EMAIL_ID                  varchar(255),
   PASSWORD                  varchar(255),
   USER_TYPE                 varchar(6),

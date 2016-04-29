@@ -2,5 +2,5 @@ package models;
 
 public class Service {
 
-	public String status;
+	public String status = "SUCCESS";
 }
