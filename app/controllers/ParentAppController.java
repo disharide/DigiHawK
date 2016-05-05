@@ -12,7 +12,7 @@ import org.json.JSONObject;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
-import entity.Location;
+import entity.LocationLog;
 import entity.PhoneLog;
 import entity.SmsLog;
 
@@ -29,7 +29,7 @@ public class ParentAppController extends Controller {
 			PhoneObj phoneRecord = new PhoneObj();
 			phoneRecord.phoneNumber = phoneLog.phoneNumber;
 			phoneRecord.duration = phoneLog.duration;
-			phoneRecord.type = phoneLog.callType.name();
+			phoneRecord.type = phoneLog.type.name();
 			phoneRecord.userId = phoneLog.user.id;
 			phoneRecord.timeInMillis = phoneLog.timeInMillis;
 
@@ -52,7 +52,7 @@ public class ParentAppController extends Controller {
 			SmsObj smsRecord = new SmsObj();
 			smsRecord.phoneNumber = smsLog.phoneNumber;
 			smsRecord.text = smsLog.text;
-			smsRecord.type = smsLog.smsType.name();
+			smsRecord.type = smsLog.type.name();
 			smsRecord.userId = smsLog.user.id;
 			smsRecord.timeInMillis = smsLog.timeInMillis;
 
@@ -65,13 +65,13 @@ public class ParentAppController extends Controller {
 	}
 
 	public Result getLocationForChild(Long childId) {
-		List<Location> locations = Location.find.where().eq("user.id", childId)
+		List<LocationLog> locations = LocationLog.find.where().eq("user.id", childId)
 				.findList();
 
 		JSONObject allLocations = new JSONObject();
 		List<LocationObj> locationObjs = new ArrayList<>();
 
-		for (Location location : locations) {
+		for (LocationLog location : locations) {
 			LocationObj locationObj = new LocationObj();
 			locationObj.latitude = location.latitude;
 			locationObj.longitude = location.longitude;

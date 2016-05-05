@@ -11,11 +11,11 @@ import play.libs.Json;
 import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.Result;
+import entity.ChildUser;
 import entity.CommunicationType;
-import entity.Location;
+import entity.LocationLog;
 import entity.PhoneLog;
 import entity.SmsLog;
-import entity.User;
 
 public class MobileDataEntryController extends Controller {
 
@@ -32,15 +32,15 @@ public class MobileDataEntryController extends Controller {
 
 		PhoneLog phoneLog = new PhoneLog();
 
-		User user = User.find.byId(phoneObj.userId);
+		ChildUser user = ChildUser.find.byId(phoneObj.userId);
 
 		phoneLog.phoneNumber = phoneObj.phoneNumber;
 		phoneLog.duration = phoneObj.duration;
 		phoneLog.timeInMillis = phoneObj.timeInMillis;
 		if ("OUTGOING".equalsIgnoreCase(phoneObj.type)) {
-			phoneLog.callType = CommunicationType.OUTGOING;
+			phoneLog.type = CommunicationType.OUTGOING;
 		} else {
-			phoneLog.callType = CommunicationType.INCOMING;
+			phoneLog.type = CommunicationType.INCOMING;
 		}
 
 		phoneLog.user = user;
@@ -68,15 +68,15 @@ public class MobileDataEntryController extends Controller {
 
 			SmsLog smsLog = new SmsLog();
 
-			User user = User.find.byId(smsObj.userId);
+			ChildUser user = ChildUser.find.byId(smsObj.userId);
 
 			smsLog.phoneNumber = smsObj.phoneNumber;
 			smsLog.text = smsObj.text;
 			smsLog.timeInMillis = smsObj.timeInMillis;
 			if ("OUTGOING".equalsIgnoreCase(smsObj.type)) {
-				smsLog.smsType = CommunicationType.OUTGOING;
+				smsLog.type = CommunicationType.OUTGOING;
 			} else {
-				smsLog.smsType = CommunicationType.INCOMING;
+				smsLog.type = CommunicationType.INCOMING;
 			}
 
 			smsLog.user = user;
@@ -100,9 +100,9 @@ public class MobileDataEntryController extends Controller {
 		LocationObj locationObj = Json.fromJson(
 				Json.parse(locationMap.get("location")[0]), LocationObj.class);
 
-		Location location = new Location();
+		LocationLog location = new LocationLog();
 
-		User user = User.find.byId(locationObj.userId);
+		ChildUser user = ChildUser.find.byId(locationObj.userId);
 
 		location.latitude = locationObj.latitude;
 		location.longitude = locationObj.longitude;

@@ -8,22 +8,17 @@ import javax.persistence.Table;
 import com.avaje.ebean.Model;
 
 @Entity
-@Table(name = "PHONE_LOG")
-public class PhoneLog extends RootEntity {
+@Table(name = "location_log")
+public class LocationLog extends RootEntity {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Column(name = "PHONE_NUMBER")
-	public String phoneNumber;
+	public String latitude;
 
-	public String duration;
-
-	public CommunicationType type;
-
-	public CommunicationStatus status;
+	public String longitude;
 
 	@ManyToOne
 	public ChildUser user;
@@ -31,6 +26,7 @@ public class PhoneLog extends RootEntity {
 	@Column(name = "TIME_IN_MILLIS")
 	public Long timeInMillis;
 
-	public static Model.Finder<Long, PhoneLog> find = new Finder<>(
-			PhoneLog.class);
+	public static Model.Finder<Long, LocationLog> find = new Finder<>(
+			LocationLog.class);
+
 }

@@ -8,6 +8,6 @@ public class LocationObj {
 
 	public String longitude;
 
-	public String timeInMillis;
+	public Long timeInMillis;
 
 }

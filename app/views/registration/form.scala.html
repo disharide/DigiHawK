@@ -7,60 +7,73 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
-<script id="customMessageTemplate" type="text/html">
-	<em class="customMessage" data-bind="validationMessage: field"></em>
-</script>
+
 <body>
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-6" id="registerForm">
 				<div class="row">
-					<div class="col-md-6 form-row">
+					<div class="col-md-3 form-row">
 						<label for="firstName" class="register">First Name</label>
 					</div>
-					<div class="col-md-6 form-row">
-						<input type="text" id="firstName" data-bind="value: firstName"
+					<div class="col-md-3 form-row">
+						<input type="text" id="firstName" data-bind="value: firstName, css: { 'error': showErrors }"
 							class="register" />
 					</div>
+					<div class="col-md-6 form-row"><label data-bind="validationMessage: firstName" class="register error-label"></label></div>
 				</div>
 				<div class="row">
-					<div class="col-md-6 form-row">
+					<div class="col-md-3 form-row">
 						<label for="lastName" class="register">Last Name</label>
 					</div>
-					<div class="col-md-6 form-row">
+					<div class="col-md-3 form-row">
 						<input type="text" id="lastName" class="register"
-							data-bind="value: lastName" />
+							data-bind="value: lastName, css: { 'error': showErrors }" />
 					</div>
+					<div class="col-md-6 form-row"><label data-bind="validationMessage: lastName" class="register error-label"></label></div>
 				</div>
 				<div class="row">
-					<div class="col-md-6 form-row">
+					<div class="col-md-3 form-row">
 						<label for="emailId" class="register">Email Id</label>
 					</div>
-					<div class="col-md-6 form-row">
+					<div class="col-md-3 form-row">
 						<input type="text" id="emailId" class="register"
-							data-bind="value: emailId" />
+							data-bind="value: emailId, css: { 'error': showErrors }" />
 					</div>
+					<div class="col-md-6 form-row"><label data-bind="validationMessage: emailId" class="register error-label"></label></div>
 				</div>
 				<div class="row">
-					<div class="col-md-6 form-row">
+					<div class="col-md-3 form-row">
+						<label for="mobileNo" class="register">Mobile Number</label>
+					</div>
+					<div class="col-md-3 form-row">
+						<input type="text" id="mobileNo" class="register"
+							data-bind="value: mobileNo, css: { 'error': showErrors }" />
+					</div>
+					<div class="col-md-6 form-row"><label data-bind="validationMessage: mobileNo" class="register error-label"></label></div>
+				</div>
+				<div class="row">
+					<div class="col-md-3 form-row">
 						<label for="password" class="register">Password</label>
 					</div>
-					<div class="col-md-6 form-row">
+					<div class="col-md-3 form-row">
 						<input type="password" id="password" class="register"
-							data-bind="value: password" />
+							data-bind="value: password, css: { 'error': showErrors }" />
 					</div>
+					<div class="col-md-6 form-row"><label data-bind="validationMessage: password" class="register error-label"></label></div>
 				</div>
 				<div class="row">
-					<div class="col-md-6 form-row">
+					<div class="col-md-3 form-row">
 						<label for="confirmPassword" class="register">Confirm
 							Password</label>
 					</div>
-					<div class="col-md-6 form-row">
-						<input type="text" id="confirmPassword" class="register"
-							data-bind="value: confirmPassword" />
+					<div class="col-md-3 form-row">
+						<input type="password" id="confirmPassword" class="register"
+							data-bind="value: confirmPassword, css: { 'error': showErrors }" />
 					</div>
+					<div class="col-md-6 form-row"><label data-bind="validationMessage: confirmPassword" class="register error-label"></label></div>
 				</div>
-				<div class="col-md-6 form-row">
+				<div class="col-md-12 form-row">
 					<input type="button" value="Sign Up" class="register"
 						data-bind="click: checkEmail" />
 				</div>
@@ -68,6 +81,7 @@
 
 		</div>
 	</div>
+
 </body>
 <script type="text/javascript">
 	ko.validation.rules.pattern.message = 'Invalid.';
@@ -75,49 +89,60 @@
 	ko.validation.init({
 		registerExtenders : true,
 		messagesOnModified : true,
-		insertMessages : true,
+		insertMessages : false,
 		parseInputAttributes : true,
 		messageTemplate : null
-	}, true);
+	});
 
-	var baseUri = "http://10.2.192.79:8998/";
+	var mustEqual = function (val, other) {
+    	return val == other;
+	};
+
+	var minChar = function(val, length){
+		return val.length >= length;
+	};
+
+	var maxChar = function(val, length){
+		return val.length <= length;
+	};
 
 	var registrationModel = {
+		
 
 		firstName : ko.observable().extend({
 			required : {
-				message : "Please enter First Name"
+				message: "First name is required"
 			}
 		}),
 		lastName : ko.observable().extend({
 			required : {
-				message : "Please enter Last Name"
+				message:"Last name is required"
 			}
 		}),
 		emailId : ko.observable().extend({
 			required : {
-				message : "Please enter Email Id"
+				message:"Email id is required"
 			},
-			email : true
+			email : {
+				message:"Please enter a valid email id"
+			}
 		}),
 		password : ko.observable().extend({
 			required : {
-				message : "Please enter Password"
-			}
+				message:"Please enter password"
+			},
+			validation: { validator: minChar, message: 'Passwords must be of 6-10 characters.', params: 6 },
+			validation: { validator: maxChar, message: 'Passwords must be of 6-10 characters', params: 10 }
+			
 		}),
-		confirmPassword : ko.observable().extend({
-			required : {
-				message : "Please confirm your Password"
+
+		mobileNo: ko.observable().extend({
+			required:{
+				message:"Please enter Mobile Number"
 			}
 		}),
 
-		//checkEmailUri: URI + firstName(),
-
-		/*checkEmail: function(){
-			$.ajax("/checkmail",{
-				data:
-			});
-		},*/
+		showErrors: ko.observable(false),
 
 		saveUser : function() {
 
@@ -135,40 +160,57 @@
 					success : function(result) {
 						if (result.status == "SUCCESS") {
 							window.location.href = baseUri + "thankyou";
-						} else {
+						} 
 							alert("Registration Failed");
 						}
-					}
+					
 
 				});
 			} else {
-				registrationModel.errors.showAllMessages();
+				registrationModel.errors.showAllMessages(true);
+				registrationModel.showErrors(true);
 			}
 		},
 
 		checkEmail : function() {
+			if (registrationModel.errors().length === 0){
 
-			var checkEmailUri = baseUri + "checkmail?mailId="
-					+ registrationModel.emailId();
-
-			console.log("checking email id from " + checkEmailUri);
-
-			$.ajax(checkEmailUri, {
-				type : "GET",
-				contentType : 'application/json; charset=utf-8',
-				success : function(result) {
-					if (result.status == "SUCCESS") {
-						registrationModel.saveUser();
-					} else {
-						alert("Email id Already registered");
+				var checkEmailUri = "/checkmail?mailId="
+						+ registrationModel.emailId();
+	
+				console.log("checking email id from " + checkEmailUri);
+	
+				$.ajax(checkEmailUri, {
+					type : 'GET',
+					contentType : 'application/json; charset=utf-8',
+					success : function(result) {
+						if (result.status == "SUCCESS") {
+							registrationModel.saveUser();
+						} else {
+							alert("Email id exists already");
+						}
 					}
-				}
-			});
+				});
+			} else{
+				registrationModel.errors.showAllMessages(true);
+				registrationModel.showErrors(true);
+			} 
 		}
+	};
 
-	}
+	
+
+	registrationModel.confirmPassword = ko.observable().extend({
+    	validation: { validator: mustEqual, message: 'Passwords do not match.', params: registrationModel.password }
+	});
+	
 
 	registrationModel.errors = ko.validation.group(registrationModel);
-	ko.applyBindings(registrationModel, $("#registerForm")[0])
+	
+
+
+ko.applyBindings(registrationModel,$('#registerForm')[0])
+
+
 </script>
 </html>

@@ -11,5 +11,5 @@ public class PhoneObj {
 
 	public String type;
 
-	public String timeInMillis;
+	public Long timeInMillis;
 }

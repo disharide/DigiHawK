@@ -19,17 +19,18 @@ public class SmsLog extends RootEntity {
 	@Column(name = "PHONE_NUMBER")
 	public String phoneNumber;
 
-	@Column(name = "SMS_TEXT", columnDefinition = "TEXT")
+	@Column(columnDefinition = "TEXT")
 	public String text;
 
-	@Column(name = "SMS_TYPE")
-	public CommunicationType smsType;
+	public CommunicationType type;
+
+	public CommunicationStatus status;
 
 	@ManyToOne
-	public User user;
+	public ChildUser user;
 
 	@Column(name = "TIME_IN_MILLIS")
-	public String timeInMillis;
+	public Long timeInMillis;
 
 	public static Model.Finder<Long, SmsLog> find = new Finder<>(SmsLog.class);
 

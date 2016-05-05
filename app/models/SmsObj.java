@@ -10,5 +10,5 @@ public class SmsObj {
 
 	public String type;
 
-	public String timeInMillis;
+	public Long timeInMillis;
 }
